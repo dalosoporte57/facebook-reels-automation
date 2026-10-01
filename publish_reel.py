@@ -33,7 +33,7 @@ print(f"   Meta context: id={me.get('id')} name={me.get('name')}")
 
 print("1) Creating Reel upload session...")
 r = requests.post(
-    f"{GRAPH_BASE}/me/video_reels",
+    f"{GRAPH_BASE}/131757838109373/video_reels",
     params={"upload_phase": "start"},
     headers={"Authorization": f"Bearer {PAGE_TOKEN}"},
     timeout=60,
@@ -101,7 +101,7 @@ if DESCRIPTION:
     params["description"] = DESCRIPTION
 
 r = requests.post(
-    f"{GRAPH_BASE}/me/video_reels",
+    f"{GRAPH_BASE}/131757838109373/video_reels",
     params=params,
     headers={"Authorization": f"Bearer {PAGE_TOKEN}"},
     timeout=60,
