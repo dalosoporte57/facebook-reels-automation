@@ -1,7 +1,5 @@
 import os
-import sys
 import time
-from pathlib import Path
 
 import requests
 
@@ -19,6 +17,23 @@ def fail(message, response=None):
         except Exception:
             pass
     raise SystemExit(message)
+
+print("0) Verifying Meta token and page context...")
+r = requests.get(
+    f"{GRAPH_BASE}/me",
+    params={"fields": "id,name"},
+    headers={"Authorization": f"Bearer {PAGE_TOKEN}"},
+    timeout=60,
+)
+if not r.ok:
+    fail("Meta rejected the access token. Verify that META_PAGE_ACCESS_TOKEN contains the Page Access Token.", r)
+
+me = r.json()
+print(f"   Meta context: id={me.get('id')} name={me.get('name')}")
+if me.get("id") != "131757838109373":
+    fail(
+        "The token is valid, but it is not the Page Access Token for Finanzas con Propósito Eterno (page 131757838109373)."
+    )
 
 print("1) Creating Reel upload session...")
 r = requests.post(
