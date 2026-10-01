@@ -3,10 +3,6 @@ name: Publish Facebook Reel
 on:
   workflow_dispatch:
     inputs:
-      video_url:
-        description: "Direct HTTPS URL of the MP4 video"
-        required: true
-        type: string
       title:
         description: "Optional Reel title"
         required: false
@@ -31,10 +27,20 @@ jobs:
       - name: Install dependency
         run: python -m pip install requests
 
+      - name: Check configuration
+        env:
+          META_PAGE_ACCESS_TOKEN: ${{ secrets.META_PAGE_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$META_PAGE_ACCESS_TOKEN" ]; then
+            echo "::error::META_PAGE_ACCESS_TOKEN no está configurado en GitHub Secrets."
+            exit 1
+          fi
+          echo "META_PAGE_ACCESS_TOKEN está configurado."
+
       - name: Publish Reel
         env:
           META_PAGE_ACCESS_TOKEN: ${{ secrets.META_PAGE_ACCESS_TOKEN }}
-          VIDEO_URL: ${{ inputs.video_url }}
+          VIDEO_URL: "https://raw.githubusercontent.com/dalosoporte57/facebook-reels-automation/main/video-5_6x03AMPA.mp4"
           REEL_TITLE: ${{ inputs.title }}
           REEL_DESCRIPTION: ${{ inputs.description }}
           META_GRAPH_VERSION: "v26.0"
