@@ -11,9 +11,13 @@ on:
         description: "Optional Reel description/caption"
         required: false
         type: string
+  push:
+    branches:
+      - main
 
 jobs:
   publish:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[RUN_PUBLISH]')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
